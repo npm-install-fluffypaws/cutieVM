@@ -1,28 +1,32 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><title>My VM</title></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Linux in a tab</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
-  <h1>My VM</h1>
-  <textarea id="code" rows="10" cols="40">PUSH 5
-DUP
-PRINT
-PUSH 1
-SUB
-DUP
-JNZ 1
-HALT</textarea><br>
-  <button onclick="go()">Run</button>
-  <pre id="out"></pre>
-  <script src="vm.js"></script>
-  <script>
-    function go() {
-      const program = document.getElementById("code").value
-        .split("\n").filter(l => l.trim())
-        .map(l => { const [op, a] = l.trim().split(/\s+/); return [op, a === undefined ? undefined : Number(a)]; });
-      const out = document.getElementById("out");
-      out.textContent = "";
-      run(program, v => out.textContent += v + "\n");
-    }
-  </script>
+  <main>
+    <h1>Linux in a tab</h1>
+    <p class="lede">A small Linux computer running inside your browser. Click the screen to type. Save its state and it will be waiting for you next visit.</p>
+
+    <div class="controls">
+      <button id="save">Save state</button>
+      <button id="load">Load saved state</button>
+      <button id="delete">Delete saved state</button>
+      <button id="reset">Restart</button>
+      <label><input type="checkbox" id="autosave"> Save every minute</label>
+    </div>
+    <p id="status" role="status">Loading…</p>
+
+    <div id="screen_container">
+      <div style="white-space: pre; font: 14px monospace; line-height: 14px"></div>
+      <canvas></canvas>
+    </div>
+  </main>
+
+  <script src="lib/libv86.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
